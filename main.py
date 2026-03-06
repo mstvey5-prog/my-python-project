@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from datetime import datetime
 import re
+import webbrowser
+import os
 
 from ui.UI_color import get_theme
 from db.database import Database, DEFAULT_SCHEDULE
@@ -58,6 +60,16 @@ class WorkoutTracker:
 
         self.refresh_profiles()
         self.lock_interface()
+
+    # ===================== ОТКРЫТЬ ВЕБ =====================
+
+    def open_web_app(self):
+        base_dir   = os.path.dirname(os.path.abspath(__file__))
+        index_path = os.path.join(base_dir, "web", "index.html")
+        if os.path.exists(index_path):
+            webbrowser.open(f"file://{index_path}")
+        else:
+            messagebox.showwarning("Файл не найден", f"Не найден файл:\n{index_path}")
 
     # ===================== ПЕРЕКЛЮЧЕНИЕ ТЕМЫ =====================
 
@@ -249,6 +261,24 @@ class WorkoutTracker:
                  bg=self.colors["bg_light"], fg=self.colors["text_accent"],
                  font=("Segoe UI", 13, "bold")).pack(pady=8, padx=15, side=tk.LEFT)
 
+        # кнопка открыть сайт
+        self.web_btn = tk.Button(
+            title_frame,
+            text="🌐 Открыть сайт",
+            command=self.open_web_app,
+            bg=self.colors["bg_light"],
+            fg=self.colors["text_primary"],
+            font=("Segoe UI", 10, "bold"),
+            activebackground=self.colors["success"],
+            activeforeground=self.colors["text_primary"],
+            bd=0, relief=tk.FLAT, cursor="hand2",
+            padx=12, pady=6
+        )
+        self.web_btn.pack(side=tk.RIGHT, padx=5, pady=4)
+        self.web_btn.bind("<Enter>", lambda e: self.web_btn.config(bg=self.colors["success"]))
+        self.web_btn.bind("<Leave>", lambda e: self.web_btn.config(bg=self.colors["bg_light"]))
+
+        # кнопка темы
         other = "light" if self._theme_name == "dark" else "dark"
         self.theme_btn = tk.Button(
             title_frame,

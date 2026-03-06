@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>404 — WorkoutTracker</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Rajdhani:wght@300;400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="../styles/styles.css" />
+
+  <style>
+    /* navbar */
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      z-index: 10;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-family: "Rajdhani", sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    /* theme toggle */
+
+    .theme-toggle {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-weak);
+      backdrop-filter: blur(12px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .theme-toggle:hover {
+      background: var(--glass-hover);
+      transform: translateY(-2px);
+    }
+
+    .theme-toggle-inner {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-icon {
+      position: absolute;
+      font-size: 18px;
+      transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .35s;
+    }
+
+    /* moon visible by default */
+
+    .moon-icon {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* sun hidden */
+
+    .sun-icon {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+
+    /* light theme */
+
+    body.light .moon-icon {
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+
+    body.light .sun-icon {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .error-page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+    }
+
+    .error-code {
+      font-family: "Space Mono", monospace;
+      font-size: clamp(110px, 20vw, 200px);
+      font-weight: 800;
+      display: flex;
+      gap: 10px;
+      letter-spacing: -6px;
+      user-select: none;
+    }
+
+    .error-code span {
+      display: inline-block;
+      position: relative;
+    }
+
+    .error-code span:nth-child(1) {
+      transform: rotate(-9deg);
+      color: var(--accent);
+    }
+
+    .error-code span:nth-child(2) {
+      transform: rotate(6deg);
+      color: var(--text-primary);
+    }
+
+    .error-code span:nth-child(3) {
+      transform: rotate(-5deg);
+      color: var(--highlight);
+    }
+
+    .error-line {
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        var(--accent),
+        var(--highlight),
+        var(--accent)
+      );
+      margin: 32px auto 40px;
+      border-radius: 1px;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .error-title {
+      font-size: clamp(20px, 4vw, 32px);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .error-sub {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      max-width: 420px;
+      line-height: 1.6;
+    }
+
+    .error-terminal {
+      background: var(--glass-weak);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-left: 3px solid var(--accent);
+      padding: 20px 24px;
+      margin-bottom: 48px;
+      font-family: "Space Mono", monospace;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-align: left;
+      max-width: 450px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: inset 0 1px 0 var(--glass-shine);
+    }
+
+    .t-line {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .t-prompt {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .t-cmd {
+      color: var(--text-link);
+    }
+
+    .t-err {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .t-muted {
+      opacity: .6;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* buttons */
+
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 14px 32px;
+      font-family: "Rajdhani", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px var(--accent-glow);
+      transition: all .3s cubic-bezier(.4,0,.2,1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,.15);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+    }
+
+    .home-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px var(--accent-glow);
+    }
+
+    .home-btn:hover::before {
+      transform: scaleX(1);
+    }
+
+    .home-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .home-btn svg {
+      width: 16px;
+      height: 16px;
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .home-btn:hover svg {
+      transform: translateX(-2px);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--glass-weak);
+      backdrop-filter: blur(16px);
+      color: var(--text-secondary);
+      border: 1px solid var(--glass-border);
+      padding: 14px 32px;
+      font-family: "Rajdhani", sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 12px;
+      box-shadow: inset 0 1px 0 var(--glass-shine);
+      transition: all .3s cubic-bezier(.4,0,.2,1);
+    }
+
+    .back-btn:hover {
+      background: var(--glass-hover);
+      border-color: var(--text-link);
+      color: var(--text-primary);
+      box-shadow:
+        0 8px 24px rgba(0,0,0,.2),
+        inset 0 1px 0 var(--glass-shine);
+      transform: translateY(-3px);
+    }
+
+    .back-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .back-btn svg {
+      width: 16px;
+      height: 16px;
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+    }
+
+    .back-btn:hover svg {
+      transform: translateX(2px);
+    }
+  </style>
+</head>
+
+<body class="dark">
+
+  <div class="grid-bg"></div>
+  <div class="noise"></div>
+
+  <nav class="navbar">
+    <a href="../index.html" class="nav-logo">
+      <span class="logo-icon"></span>
+      <span class="logo-text"></span>
+    </a>
+
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle">
+        <div class="theme-toggle-inner">
+          <span class="theme-icon sun-icon">☀️</span>
+          <span class="theme-icon moon-icon">🌙</span>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <div class="error-page">
+
+    <div class="error-code">
+      <span>4</span>
+      <span>0</span>
+      <span>4</span>
+    </div>
+
+    <div class="error-line"></div>
+
+    <h1 class="error-title">WHOOOOPS!</h1>
+    <p class="error-sub">this page not found or developing</p>
+
+    <div class="error-terminal">
+
+      <div class="t-line">
+        <span class="t-prompt">$</span>
+        <span class="t-cmd">find</span>
+        <span class="t-err">/page</span>
+      </div>
+
+      <div class="t-line">
+        <span class="t-prompt">→</span>
+        <span class="t-muted">error: page not found</span>
+      </div>
+
+      <div class="t-line">
+        <span class="t-prompt">$</span>
+        <span class="t-cmd">cd</span>
+        <span class="t-err">/home</span>
+      </div>
+
+    </div>
+
+    <div class="error-actions">
+
+      <a href="../index.html" class="home-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        На главную
+      </a>
+
+      <button class="back-btn" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        Назад
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+    const themeToggle = document.getElementById("themeToggle");
+
+    function applyTheme(theme) {
+      document.body.className = theme;
+      localStorage.setItem("wt_theme", theme);
+    }
+
+    themeToggle.addEventListener("click", () => {
+      themeToggle.classList.add("rotating");
+
+      applyTheme(
+        document.body.classList.contains("dark")
+          ? "light"
+          : "dark"
+      );
+
+      setTimeout(() => {
+        themeToggle.classList.remove("rotating");
+      }, 600);
+    });
+
+    applyTheme(localStorage.getItem("wt_theme") || "dark");
+  </script>
+
+</body>
+</html>

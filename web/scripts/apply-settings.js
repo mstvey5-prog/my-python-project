@@ -1,6 +1,4 @@
 // ===== APPLY-SETTINGS.JS =====
-// Подключать на каждой странице ДО других скриптов
-
 (function () {
     const DEFAULTS = {
         theme: 'dark',
@@ -43,11 +41,16 @@
     // --- СТЕКЛО ---
     if (!s.glass) {
         document.body.classList.add('no-glass');
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('*').forEach(function (el) {
+                try { el.style.backdropFilter = 'none'; el.style.webkitBackdropFilter = 'none'; } catch(e) {}
+            });
+        });
     }
 
     // --- ШРИФТ ---
     const fontSize = parseInt(s.fontSize) || 100;
-        if (fontSize !== 100) {
+    if (fontSize !== 100) {
         document.documentElement.style.setProperty('font-size', fontSize + '%');
     }
 
@@ -56,11 +59,12 @@
         document.body.classList.add('no-anim');
     }
 
-    // DOM готов — применяем орбы и сетку
+    // --- DOM READY: орбы и сетка ---
     document.addEventListener('DOMContentLoaded', function () {
         if (!s.orbs) {
             const noise = document.querySelector('.noise');
             if (noise) noise.style.display = 'none';
+            document.body.style.setProperty('--orb-3', 'transparent');
         }
         if (!s.grid) {
             const grid = document.querySelector('.grid-bg');
@@ -68,7 +72,7 @@
         }
     });
 
-    // system theme watcher
+    // --- SYSTEM THEME WATCHER ---
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
         const t = localStorage.getItem('wt_theme') || DEFAULTS.theme;
         if (t === 'system') {

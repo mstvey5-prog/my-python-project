@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings — NAME APP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/settings.css">
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+    <div class="noise"></div>
+
+    <div class="toast" id="toast">
+        <span class="toast-icon" id="toastIcon"></span>
+        <div class="toast-text">
+            <span class="toast-title" id="toastTitle"></span>
+            <span class="toast-sub" id="toastSub"></span>
+        </div>
+    </div>
+
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-dialog">
+            <span class="confirm-emoji">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </span>
+            <div class="confirm-title">Сбросить настройки?</div>
+            <div class="confirm-sub">Все изменения будут удалены и настройки вернутся к значениям по умолчанию</div>
+            <div class="confirm-actions">
+                <button class="confirm-cancel" id="confirmCancel">Отмена</button>
+                <button class="confirm-ok" id="confirmOk">Сбросить</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-logo">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <rect x="2" y="2" width="11" height="11" rx="3" fill="var(--accent)"/>
+                <rect x="15" y="2" width="11" height="11" rx="3" fill="var(--accent)" opacity="0.5"/>
+                <rect x="2" y="15" width="11" height="11" rx="3" fill="var(--accent)" opacity="0.5"/>
+                <rect x="15" y="15" width="11" height="11" rx="3" fill="var(--accent)" opacity="0.3"/>
+            </svg>
+            <span class="logo-text">NAME APP</span>
+        </div>
+        <div class="nav-right">
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <div class="theme-toggle-inner">
+                    <svg class="theme-icon moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="theme-icon sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                </div>
+            </button>
+            <a href="../index.html" class="nav-icon-btn" aria-label="Home">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <main class="settings-page">
+
+        <a href="../index.html" class="settings-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 5l-7 7 7 7"/>
+            </svg>
+            Назад
+        </a>
+
+        <div class="settings-header">
+            <h1>Настройки</h1>
+            <p>Персонализируй внешний вид приложения</p>
+        </div>
+
+        <!-- ТЕМА -->
+        <div class="settings-section">
+            <div class="section-label">Тема</div>
+            <div class="settings-group">
+                <div class="settings-row">
+                    <div class="row-info">
+                        <div class="row-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2a10 10 0 0 1 0 20A10 10 0 0 1 12 2z" fill="currentColor" opacity="0.15"/>
+                                <path d="M12 2v20"/>
+                                <path d="M12 2a10 10 0 0 0 0 20z" fill="currentColor" opacity="0.4"/>
+                                <circle cx="12" cy="12" r="10"/>
+                            </svg>
+                        </div>
+                        <div class="row-text">
+                            <h3>Цветовая схема</h3>
+                            <p>Тёмная, светлая или как в системе</p>
+                        </div>
+                    </div>
+                    <div class="theme-picker">
+                        <label class="theme-option">
+                            <input type="radio" name="theme" value="dark">
+                            <div class="theme-preview dark-preview"></div>
+                            <span>Тёмная</span>
+                        </label>
+                        <label class="theme-option">
+                            <input type="radio" name="theme" value="light">
+                            <div class="theme-preview light-preview"></div>
+                            <span>Светлая</span>
+                        </label>
+                        <label class="theme-option">
+                            <input type="radio" name="theme" value="system">
+                            <div class="theme-preview system-preview"></div>
+                            <span>Система</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- АКЦЕНТ -->
+        <div class="settings-section">
+            <div class="section-label">Акцентный цвет</div>
+            <div class="settings-group">
+                <div class="settings-row accent-row">
+                    <div class="row-info">
+                        <div class="row-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L8 8.5C6.5 11 6 13 6 14.5a6 6 0 0 0 12 0c0-1.5-.5-3.5-2-6L12 2z" fill="currentColor" opacity="0.2"/>
+                                <path d="M12 2L8 8.5C6.5 11 6 13 6 14.5a6 6 0 0 0 12 0c0-1.5-.5-3.5-2-6L12 2z"/>
+                                <path d="M9 15.5a3 3 0 0 0 3 2" opacity="0.6"/>
+                            </svg>
+                        </div>
+                        <div class="row-text">
+                            <h3>Цвет акцента</h3>
+                            <p>Кнопки, ссылки и активные элементы</p>
+                        </div>
+                    </div>
+                    <div class="accent-row-right">
+                        <div class="accent-picker" id="accentPicker">
+                            <div class="accent-dot active" data-color="#ff3b30" style="background:#ff3b30"></div>
+                            <div class="accent-dot" data-color="#007aff" style="background:#007aff"></div>
+                            <div class="accent-dot" data-color="#00d084" style="background:#00d084"></div>
+                            <div class="accent-dot" data-color="#7c3aed" style="background:#7c3aed"></div>
+                            <div class="accent-dot" data-color="#ff9500" style="background:#ff9500"></div>
+                            <div class="accent-dot" data-color="#ff2d78" style="background:#ff2d78"></div>
+                        </div>
+                        <button class="accent-expand-btn" id="accentExpandBtn" aria-label="Свой цвет">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="accent-custom-panel" id="accentCustomPanel">
+                    <div class="accent-custom-inner">
+                        <div class="accent-custom-preview" id="accentCustomPreview"></div>
+                        <div class="accent-custom-info">
+                            <span class="accent-custom-label">Свой цвет <span class="wip-inline">скоро</span></span>
+                            <span class="accent-custom-sub">Выбор произвольного цвета будет доступен в следующей версии</span>
+                        </div>
+                        <div class="accent-custom-circle wip-control">
+                            <div class="custom-circle-inner">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="12" y1="8" x2="12" y2="16"/>
+                                    <line x1="8" y1="12" x2="16" y2="12"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ОТОБРАЖЕНИЕ -->
+        <div class="settings-section">
+            <div class="section-label">Отображение</div>
+            <div class="settings-group">
+
+                <div class="settings-row">
+                    <div class="row-info">
+                        <div class="row-icon">
+                            <!-- Стекло с бликом -->
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="4" width="20" height="16" rx="3" fill="currentColor" opacity="0.1"/>
+                                <rect x="2" y="4" width="20" height="16" rx="3"/>
+                                <path d="M6 8 Q9 6 11 9" opacity="0.5"/>
+                                <path d="M6 11 Q7.5 10 9 11.5" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <div class="row-text">
+                            <h3>Стеклянный эффект <span class="wip-inline">скоро</span></h3>
+                            <p>Blur и backdrop-filter на элементах</p>
+                        </div>
+                    </div>
+                    <label class="toggle wip-control" >
+                        <input type="checkbox" id="glassToggle">
+                        <span class="toggle-track"></span>
+                    </label>
+                </div>
+
+                <div class="settings-row">
+                    <div class="row-info">
+                        <div class="row-icon">
+                            <!-- Орбы — концентрические круги -->
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.5"/>
+                                <circle cx="12" cy="12" r="6" opacity="0.3"/>
+                                <circle cx="12" cy="12" r="10" opacity="0.15"/>
+                            </svg>
+                        </div>
+                        <div class="row-text">
+                            <h3>Орбы на фоне</h3>
+                            <p>Плавающие цветные пятна</p>
+                        </div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="orbsToggle">
+                        <span class="toggle-track"></span>
+                    </label>
+                </div>
+
+                <div class="settings-row">
+                    <div class="row-info">
+                        <div class="row-icon">
+                            <!-- Сетка -->
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <line x1="3" y1="9" x2="21" y2="9"/>
+                                <line x1="3" y1="15" x2="21" y2="15"/>
+                                <line x1="9" y1="3" x2="9" y2="21"/>
+                                <line x1="15" y1="3" x2="15" y2="21"/>
+                            </svg>
+                        </div>
+                        <div class="row-text">
+                            <h3>Сетка фона</h3>
+                            <p>Тонкая сетка на заднем плане</p>
+                        </div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="gridToggle">
+                        <span class="toggle-track"></span>
+                    </label>
+                </div>
+
+                <div class="settings-row">
+                    <div class="row-info">
+                        <div class="row-icon">
+                            <!-- Типографика — буква А -->
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 20L10 4L16 20"/>
+                                <path d="M6.5 13.5h7"/>
+                                <line x1="2" y1="20" x2="6" y2="20" opacity="0.5"/>
+                                <line x1="14" y1="20" x2="18" y2="20" opacity="0.5"/>
+                            </svg>
+                        </div>
+                        <div class="row-text">
+                            <h3>Размер шрифта <span class="wip-inline">скоро</span></h3>
+                            <p>Базовый масштаб шрифта интерфейса</p>
+                        </div>
+                    </div>
+                    <div class="font-size-control wip-control">
+                        <button class="font-size-btn" id="fontDown" disabled>−</button>
+                        <span class="font-size-value" id="fontSizeVal">100%</span>
+                        <button class="font-size-btn" id="fontUp" disabled>+</button>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <div class="row-info">
+                        <div class="row-icon">
+                            <!-- Молния — анимации -->
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M13 2L4.09 12.26a1 1 0 0 0 .74 1.69H11l-1 8 8.92-10.26a1 1 0 0 0-.74-1.69H13l1-8z" fill="currentColor" opacity="0.15"/>
+                                <path d="M13 2L4.09 12.26a1 1 0 0 0 .74 1.69H11l-1 8 8.92-10.26a1 1 0 0 0-.74-1.69H13l1-8z"/>
+                            </svg>
+                        </div>
+                        <div class="row-text">
+                            <h3>Анимации</h3>
+                            <p>Переходы и hover-эффекты</p>
+                        </div>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="animToggle">
+                        <span class="toggle-track"></span>
+                    </label>
+                </div>
+
+            </div>
+        </div>
+
+        <button class="reset-btn" id="resetBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                <polyline points="1 4 1 10 7 10"/>
+                <path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
+            </svg>
+            Сбросить все настройки
+        </button>
+        <div class="version-tag">version 0.1 · settings</div>
+
+    </main>
+
+    <script src="../scripts/apply-settings.js"></script>
+    <script src="../scripts/settings.js"></script>
+</body>
+</html>
